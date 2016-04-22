@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Leaflet Quick Start Guide Example</title>
+  <meta charset="utf-8" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
+  <style>
+  #map{
+    width: 100%;
+    height: 800px;
+  }
+  </style>
+
+
+</head>
+
+<body>
+  <div id="map"></div>
+  <script src="https://code.jquery.com/jquery-git.min.js"></script>
+  <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
+  <script src="leaflet.ajax.min.js"></script>
+  <script src="http://timwis.com/leaflet-choropleth/dist/choropleth.js"></script>
+
+
+  <script>
+    var map = L.map('map').setView([45.4471840457, 9.13893127441406], 11)
+
+    // Add basemap
+    L.tileLayer('http://{s}.tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png', {
+      maxZoom: 18,
+      attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+    }).addTo(map)
+
+    // Add Sampled Point with known 'value'
+    var sampledPoints = {
+      "type": "FeatureCollection",
+      "features": [
+        {
+          "type": "Feature",
+          "properties": {
+            "marker-color": "#7e7e7e",
+            "marker-size": "medium",
+            "marker-symbol": "",
+            "value": 4,
+            "id": 4
+          },
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              9.155731201171875,
+              45.47216977418841
+            ]
+          }
+        },
+        {
+          "type": "Feature",
+          "properties": {
+            "marker-color": "#7e7e7e",
+            "marker-size": "medium",
+            "marker-symbol": "",
+            "value": 99,
+            "id": 2
+          },
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              9.195213317871094,
+              45.53689620055365
+            ]
+          }
+        },
+        {
+          "type": "Feature",
+          "properties": {
+            "marker-color": "#7e7e7e",
+            "marker-size": "medium",
+            "marker-symbol": "",
+            "value": 10,
+            "id": 1
+          },
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              9.175300598144531,
+              45.49912810913339
+            ]
+          }
+        },
+        {
+          "type": "Feature",
+          "properties": {
+            "marker-color": "#7e7e7e",
+            "marker-size": "medium",
+            "marker-symbol": "",
+            "value": 6,
+            "id": 3
+          },
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              9.231605529785156,
+              45.49190839157102
+            ]
+          }
+        },
+        {
+          "type": "Feature",
+          "properties": {
+            "marker-color": "#7e7e7e",
+            "marker-size": "medium",
+            "marker-symbol": "",
+            "value": 7,
+            "id": 5
+          },
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              9.116249084472656,
+              45.4391764115696
+            ]
+          }
+        }
+      ]
+    }
+
+    L.geoJson(sampledPoints.features,{
+      onEachFeature: function(feature, layer) {
+        layer.bindPopup("I'm a sampled point with value " + feature.properties.value)
+      }
+    }).addTo(map);
+
+    // Add interpolated surface
+    $.getJSON('./squareGrid.geojson', function(geojson) {
+      L.choropleth(geojson, {
+        valueProperty: 'z',
+        scale: ['white', 'red'],
+        steps: 5,
+        mode: 'q',
+        style: {
+          color: '#fff',
+          weight: 2,
+          fillOpacity: 0.8
+        },
+        onEachFeature: function(feature, layer) {
+          layer.bindPopup("I'm a cell with an IDW interpolated Z value of " + feature.properties.z)
+        }
+      }).addTo(map)
+    });
+
+  </script>
+</body>
+
+</html>

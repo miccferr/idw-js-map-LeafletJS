@@ -1,2 +1,3 @@
-# idw-js-map-mapboxJS
-Visualizing IDW js algorithm with mapboxJS
+# IDW slippy map with MapboxJS
+
+Visualizing IDW JS algorithm with mapboxJS
