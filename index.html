@@ -24,6 +24,7 @@
   <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
   <script src="leaflet.ajax.min.js"></script>
   <script src="http://timwis.com/leaflet-choropleth/dist/choropleth.js"></script>
+  <script src="squareGrid.geojson"></script>
 
 
   <script>
@@ -134,22 +135,21 @@
     }).addTo(map);
 
     // Add interpolated surface
-    $.getJSON('./squareGrid.geojson', function(geojson) {
-      L.choropleth(geojson, {
-        valueProperty: 'z',
-        scale: ['white', 'red'],
-        steps: 5,
-        mode: 'q',
-        style: {
-          color: '#fff',
-          weight: 2,
-          fillOpacity: 0.8
-        },
-        onEachFeature: function(feature, layer) {
-          layer.bindPopup("I'm a cell with an IDW interpolated Z value of " + feature.properties.z)
-        }
-      }).addTo(map)
-    });
+    L.choropleth(grid, {
+      valueProperty: 'z',
+      scale: ['white', 'red'],
+      steps: 5,
+      mode: 'q',
+      style: {
+        color: '#fff',
+        weight: 2,
+        fillOpacity: 0.8
+      },
+      onEachFeature: function(feature, layer) {
+        layer.bindPopup("I'm a cell with an IDW interpolated Z value of " + feature.properties.z)
+      }
+    }).addTo(map)
+  
 
   </script>
 </body>
